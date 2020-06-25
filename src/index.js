@@ -20,13 +20,28 @@ class MyComponent extends React.Component {
   }
 
   switchCata(e) {
-    console.log(e.target)
     this.setState({ nowCata: e.target.innerText })
   }
 
   backMainPage(e) {
     console.log(e.target)
     this.setState({ nowCata: "All" })
+  }
+
+  windowChangeContent() {
+    let nowUrl = window.location.href
+    let add = nowUrl.split('/')
+    console.log(add[add.length - 1])
+    let point = add[add.length - 1]
+    if (point === "start") {
+      this.setState({ nowCata: "快速開始" })
+    } else if (point === "react") {
+      this.setState({ nowCata: "React 基礎" })
+    } else if (point === "redux") {
+      this.setState({ nowCata: "Redux 基礎" })
+    } else {
+      this.setState({ nowCata: "All" })
+    }
   }
 
   componentDidMount() {
@@ -49,6 +64,10 @@ class MyComponent extends React.Component {
           });
         }
       )
+
+    window.addEventListener('popstate', () => { this.windowChangeContent() })
+    this.windowChangeContent()
+    
   }
 
   render() {
@@ -62,6 +81,7 @@ class MyComponent extends React.Component {
       console.log(items)
       return (
         <div>
+          <div>Midterm Exam</div>
           <Nav navData={items.chapters} switchBtn={this.switchCata.bind(this)} />
           <Content item={items} nowCata={this.state.nowCata} switchBtn={this.backMainPage.bind(this)} />
         </div>
